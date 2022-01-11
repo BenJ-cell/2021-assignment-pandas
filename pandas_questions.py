@@ -48,7 +48,7 @@ def merge_referendum_and_areas(referendum, regions_and_departments):
     french living abroad.
     """
     referendum["Department code"] = pd.Series(referendum["Department code"],
-                                              dtype="string")
+                                              dtype="string").str.zfill(2)
 
     regions_and_departments = regions_and_departments[~regions_and_departments["code_reg"].isin(["DOM", "TOM", "COM"])]
     regions_and_departments["code_dep"] = pd.Series(regions_and_departments["code_dep"],
