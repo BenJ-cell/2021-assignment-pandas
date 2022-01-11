@@ -36,8 +36,7 @@ def merge_regions_and_departments(regions, departments):
                                                       how="left",
                                                       left_on=["region_code"],
                                                       right_on=["code"],
-                                                      suffixes=["_dep", "_reg"]
-                                                      )
+                                                      suffixes=["_dep", "_reg"])
     return merge_regions_and_departments[columns]
 
 
@@ -49,16 +48,16 @@ def merge_referendum_and_areas(referendum, regions_and_departments):
     """
     referendum["Department code"] = pd.Series(referendum["Department code"],
                                               dtype="string").str.zfill(2)
-
-    regions_and_departments = regions_and_departments[~regions_and_departments["code_reg"].isin(["DOM", "TOM", "COM"])]
+    
+    filter_abroad_regions = ~regions_and_departments["code_reg"].isin(["DOM", "TOM", "COM"])
+    regions_and_departments = regions_and_departments[filter_abroad_regions]
     regions_and_departments["code_dep"] = pd.Series(regions_and_departments["code_dep"],
                                                     dtype="string")
     
     merge_referendum_and_areas = referendum.merge(regions_and_departments,
                                                   how="left",
                                                   left_on=["Department code"],
-                                                  right_on=['code_dep']
-                                                 )
+                                                  right_on=['code_dep'])
     merge_referendum_and_areas = merge_referendum_and_areas.dropna()
 
     return merge_referendum_and_areas
