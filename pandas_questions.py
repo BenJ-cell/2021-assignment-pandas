@@ -53,7 +53,8 @@ def merge_referendum_and_areas(referendum, regions_and_departments):
     merge_referendum_and_areas = referendum.merge(regions_and_departments,
                                                   how="left",
                                                   left_on=["Department code"],
-                                                  right_on=['code_dep'])
+                                                  right_on=['code_dep']
+                                                 )
 
     return merge_referendum_and_areas
 
@@ -85,8 +86,18 @@ def plot_referendum_map(referendum_result_by_regions):
       should display the rate of 'Choice A' over all expressed ballots.
     * Return a gpd.GeoDataFrame with a column 'ratio' containing the results.
     """
+    geographic_regions = gpd.read_file('./data/regions.geojson')
+    referendum_map = referendum_result_by_regions.merge(geographic_regions,
+                                                        how="left",
+                                                        left_on=["name_reg"],
+                                                        right_on=['nom']
+                                                        )
 
-    return gpd.GeoDataFrame({})
+    referendum_map["ratio"] =  referendum_map["Choice A"].astype(int) / (referendum_map["Choice B"].astype(int) + referendum_map['Choice A'].astype(int))
+    referendum_map_geodataframe = gpd.GeoDataFrame(referendum_map)
+    referendum_map_geodataframe.plot("ratio")
+
+    return referendum_map_geodataframe
 
 
 if __name__ == "__main__":
