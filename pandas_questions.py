@@ -51,6 +51,7 @@ def merge_referendum_and_areas(referendum, regions_and_departments):
     
     filter_abroad_regions = ~regions_and_departments["code_reg"].isin(["DOM", "TOM", "COM"])
     regions_and_departments = regions_and_departments[filter_abroad_regions]
+    
     regions_and_departments["code_dep"] = pd.Series(regions_and_departments["code_dep"],
                                                     dtype="string")
     
