@@ -28,13 +28,17 @@ def merge_regions_and_departments(regions, departments):
     The columns in the final DataFrame should be:
     ['code_reg', 'name_reg', 'code_dep', 'name_dep']
     """
+    columns = ['code_reg', 
+               'name_reg', 
+               'code_dep', 
+               'name_dep']
     merge_regions_and_departments = departments.merge(regions,
                                                       how="left",
                                                       left_on=["region_code"],
                                                       right_on=["code"],
                                                       suffixes=["_dep", "_reg"]
                                                       )
-    return merge_regions_and_departments
+    return merge_regions_and_departments[columns]
 
 
 def merge_referendum_and_areas(referendum, regions_and_departments):
