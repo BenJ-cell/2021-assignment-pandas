@@ -46,15 +46,13 @@ def merge_referendum_and_areas(referendum, regions_and_departments):
     You can drop the lines relative to DOM-TOM-COM departments, and the
     french living abroad.
     """
+    abroad = ["DOM", "TOM", "COM"]
     referendum["Department code"] = pd.Series(referendum["Department code"],
                                               dtype="string").str.zfill(2)
-    
-    filter_abroad_regions = ~regions_and_departments["code_reg"].isin(["DOM", "TOM", "COM"])
+    filter_abroad_regions = ~regions_and_departments["code_reg"].isin(abroad)
     regions_and_departments = regions_and_departments[filter_abroad_regions]
-    
     regions_and_departments["code_dep"] = pd.Series(regions_and_departments["code_dep"],
                                                     dtype="string")
-    
     merge_referendum_and_areas = referendum.merge(regions_and_departments,
                                                   how="left",
                                                   left_on=["Department code"],
