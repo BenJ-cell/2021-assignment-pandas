@@ -47,12 +47,12 @@ def merge_referendum_and_areas(referendum, regions_and_departments):
     french living abroad.
     """
     abroad = ["DOM", "TOM", "COM"]
+    r_d_cdep = regions_and_departments["code_dep"]
     referendum["Department code"] = pd.Series(referendum["Department code"],
                                               dtype="string").str.zfill(2)
     filter_abroad_regions = ~regions_and_departments["code_reg"].isin(abroad)
     regions_and_departments = regions_and_departments[filter_abroad_regions]
-    regions_and_departments["code_dep"] = pd.Series(regions_and_departments["code_dep"],
-                                                    dtype="string")
+    r_d_cdep = pd.Series(r_d_cdep,dtype="string")
     merge_referendum_and_areas = referendum.merge(regions_and_departments,
                                                   how="left",
                                                   left_on=["Department code"],
@@ -70,7 +70,7 @@ def compute_referendum_result_by_regions(referendum_and_areas):
     """
     columns = ['name_reg',
                'Registered',
-               'Abstentions', 
+               'Abstentions',
                'Null',
                'Choice A',
                'Choice B']
@@ -97,8 +97,9 @@ def plot_referendum_map(referendum_result_by_regions):
                                                         left_on=["name_reg"],
                                                         right_on=['nom']
                                                         )
-    
-    tot_ref = referendum_map["Choice B"].astype(int) + referendum_map['Choice A'].astype(int)
+    A = referendum_map['Choice A'].astype(int)
+    B = referendum_map["Choice B"].astype(int)
+    tot_ref = A + B
     referendum_map["ratio"] = referendum_map["Choice A"].astype(int) / tot_ref
     referendum_map_geodataframe = gpd.GeoDataFrame(referendum_map)
     referendum_map_geodataframe.plot("ratio")
