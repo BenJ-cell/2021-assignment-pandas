@@ -59,6 +59,7 @@ def merge_referendum_and_areas(referendum, regions_and_departments):
                                                   left_on=["Department code"],
                                                   right_on=['code_dep']
                                                  )
+    merge_referendum_and_areas = merge_referendum_and_areas.dropna()
 
     return merge_referendum_and_areas
 
