@@ -52,7 +52,7 @@ def merge_referendum_and_areas(referendum, regions_and_departments):
                                               dtype="string").str.zfill(2)
     filter_abroad_regions = ~regions_and_departments["code_reg"].isin(abroad)
     regions_and_departments = regions_and_departments[filter_abroad_regions]
-    r_d_cdep = pd.Series(r_d_cdep,dtype="string")
+    r_d_cdep = pd.Series(r_d_cdep, dtype="string")
     merge_referendum_and_areas = referendum.merge(regions_and_departments,
                                                   how="left",
                                                   left_on=["Department code"],
