@@ -100,8 +100,7 @@ def plot_referendum_map(referendum_result_by_regions):
                                                         right_on=['nom']
                                                         )
     
-    tot_ref = referendum_map["Choice B"].astype(int) 
-              + referendum_map['Choice A'].astype(int)
+    tot_ref = referendum_map["Choice B"].astype(int) + referendum_map['Choice A'].astype(int)
     referendum_map["ratio"] = referendum_map["Choice A"].astype(int) / tot_ref
     referendum_map_geodataframe = gpd.GeoDataFrame(referendum_map)
     referendum_map_geodataframe.plot("ratio")
